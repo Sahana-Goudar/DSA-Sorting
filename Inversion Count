@@ -80,4 +80,5 @@ int Solution::solve(vector<int> &A) {
 }
 
 
+// TC : O(NLOGN) SC: O(N)
 
