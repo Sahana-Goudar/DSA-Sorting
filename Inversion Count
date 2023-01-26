@@ -1,0 +1,83 @@
+/* 
+Problem Description :
+  Given an array of integers A. If i < j and A[i] > A[j], then the pair (i, j) is called an inversion of A. Find the total number of inversions of A          modulo (109 + 7).
+  
+Problem Constraints
+  1 <= length of the array <= 100000
+  1 <= A[i] <= 10^9.
+  
+Input Format
+  The only argument given is the integer array A.
+
+Output Format
+  Return the number of inversions of A modulo (109 + 7).
+    
+Example Input
+A = [3, 2, 1].  ans = 3, All pairs are inversions.
+
+A = [1, 2, 3].  ans = 0, No inversions. 
+
+Solution :
+Method 1 - With brute force approach TC : O(N^2) SC : O(1),  comparing each element over other elements. and if matches given condition increment ans.
+
+Method 2 - 
+  Using Merge sort technique
+   Divide into half and ans is (ans in first part ) + (ans in second part) + (ans after merging two parts). */
+   
+
+// code
+int invCount(vector<int> &A, vector<int> &temp, int start, int end);
+
+int mergeCount(vector<int> &A, vector<int> &temp, int start, int mid, int end){
+    int p1 = start, p2 = mid+1;
+    int p3 = start;
+    long count = 0;
+    int mod = 1e9+7;
+    while(p1<= mid && p2 <=end){
+        if (A[p1]<=A[p2]){
+            temp[p3] = A[p1];
+            p3++, p1++;
+        }
+        else{
+            count += (mid+1 - p1 + mod)%mod;
+            temp[p3] = A[p2];
+            p3++, p2++;
+        }
+    }
+    while(p1 <= mid){
+        temp[p3] = A[p1];
+        p3++, p1++;
+    }
+
+    while(p2 <= end){
+        temp[p3] = A[p2];
+        p3++, p2++;
+    } 
+
+    for(int i = start; i<=end; i++){
+        A[i] = temp[i];
+    }
+    return (count + mod)%mod;
+}
+
+int invCount(vector<int> &A, vector<int> &temp, int start, int end){
+    int inv = 0;
+    int mod = 1e9+7;
+
+    if (start < end){
+        int mid = (start + end)/2;
+        inv += invCount(A, temp, start, mid); // ans of first part
+        inv += invCount(A, temp, mid+1, end); // ans of second part
+        inv += mergeCount(A, temp, start, mid, end); // ans after merging both part
+    }
+    return inv% mod;
+}
+
+int Solution::solve(vector<int> &A) {
+    int n = A.size();
+    vector<int> temp(n, 0);
+    return invCount(A, temp, 0, n-1);
+}
+
+
+
