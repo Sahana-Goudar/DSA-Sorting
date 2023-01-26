@@ -1,0 +1,36 @@
+Problem Description
+  You are given an array A of N elements. You have to make all elements unique. To do so, in one step you can increase any number by one.
+  Find the minimum number of steps.
+
+Problem Constraints
+  1 <= N <= 105
+  1 <= A[i] <= 109
+
+Input Format
+  The only argument given is an Array A, having N integers.
+Output Format
+  Return the minimum number of steps required to make all elements unique.
+
+Example Input
+  A = [1, 1, 3]. ans = 1, we can increase second element by 1 [1, 2, 3]
+  A = [2, 4, 5]. ans = 0, All elements are distinct.
+  
+Solution :
+
+int Solution::solve(vector<int> &A) {
+    int count = 0;
+    sort(A.begin(), A.end());
+    int n = A.size();
+
+    for(int i = 1; i<n; i++){
+        if (A[i] <= A[i-1]){
+            int diff = A[i-1] - A[i];
+            A[i] += diff+1;
+            count += diff+1;
+        }
+    }
+    return count;
+}
+
+approach after sorting if equal or greater than next element add difference to ith value.
+TC : O(NLOGN) SC: O(1)
