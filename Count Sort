@@ -1,0 +1,40 @@
+Problem Description
+  Given an array A. Sort this array using Count Sort Algorithm and return the sorted array.
+
+Problem Constraints
+  1 <= |A| <= 105. 1 <= A[i] <= 105
+
+Input Format
+  The first argument is an integer array A.
+Output Format
+  Return an integer array that is the sorted array A.
+
+Example 
+  A = [1, 3, 1].   [1, 1, 3]
+  A = [4, 2, 1, 3]  [1, 2, 3, 4]
+  
+  
+Approach - Using hashmap store frequency of each value and for range of min to maxvalue, based on nor of frequency fill the ans array.
+
+vector<int> Solution::solve(vector<int> &A) {
+    unordered_map<int, int> um;
+    int n = A.size();
+    int maxVal = INT_MIN, minVal = INT_MAX;
+    for(int i = 0; i<n; i++){
+        um[A[i]]++;
+        maxVal = max(maxVal, A[i]);
+        minVal = min(minVal, A[i]);
+    }
+
+    int k = 0;
+    for(int i = minVal; i<=maxVal; i++){
+        int fr = um[i];
+        for(int j = 0; j<fr; j++){
+            A[k] = i;
+            k++;
+        }
+    }
+    return A;
+}
+
+// TC : O(N + K) K -range SC : O(1)
